@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Documentation - Déploiement d'un projet SIPCO</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>📘 Documentation de Déploiement - SIPCO</h1>
+  </header>
+
+  <section>
+    <h2>🎯 Objectif</h2>
+    <p>Ce guide explique comment mettre en ligne un projet web (ex: Next.js) via le script de déploiement automatique SIPCO et l'intégration à Traefik.</p>
+  </section>
+
+  <section>
+    <h2>🧾 Pré-requis</h2>
+    <ul>
+      <li>Un dépôt GitHub fonctionnel contenant :</li>
+      <ul>
+        <li>Le projet (Next.js, Node.js, etc.)</li>
+        <li>Un <code>Dockerfile</code></li>
+        <li>Un <code>docker-compose.yml</code> sera généré automatiquement</li>
+      </ul>
+      <li>Une clé SSH <strong>ajoutée à votre compte GitHub</strong></li>
+      <li>Un accès SSH au serveur de déploiement</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>🔐 Clé SSH GitHub</h2>
+    <ol>
+      <li>Générez une clé : <code>ssh-keygen -t ed25519 -C "votre email"</code></li>
+      <li>Copiez-la : <code>cat ~/.ssh/id_ed25519.pub</code></li>
+      <li>Ajoutez-la à votre compte GitHub (Settings → SSH Keys)</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>📁 Création des fichiers de configuration</h2>
+    <p>Créez le dossier d'environnement correspondant à votre domaine :</p>
+    <pre>/opt/environnement/monprojet.fr/</pre>
+    <p>Ajoutez les fichiers suivants :</p>
+
+    <h3>.env</h3>
+    <pre><code>PORT=3000
+NODE_ENV=production
+</code></pre>
+
+    <h3>.env.production</h3>
+    <pre><code>DATABASE_URL=mysql://user:pass@db:3306/database
+NEXTAUTH_SECRET=une_super_clé
+RESEND_API_KEY=re_abcdefg123456
+</code></pre>
+  </section>
+
+  <section>
+    <h2>🚀 Lancement du déploiement</h2>
+    <ol>
+      <li>Lancez le script depuis le serveur :</li>
+      <pre><code>./deployer_sipcogaming.sh</code></pre>
+      <li>Entrez le nom de domaine complet (ex: <code>sipcogaming.fr</code>)</li>
+      <li>Indiquez si vous souhaitez aussi activer <code>www.nomdudomaine</code></li>
+      <li>Entrez l'URL Git (SSH recommandé) : <code>git@github.com:votrenom/projet.git</code></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>🔗 Exemple final</h2>
+    <pre>
+Nom de domaine : sipcogaming.fr
+URL Git : git@github.com:sipco/sipcogaming.git
+.env et .env.production dans /opt/environnement/sipcogaming.fr/
+Option www : Oui
+Accès final : https://sipcogaming.fr et https://www.sipcogaming.fr
+    </pre>
+  </section>
+
+  <footer>
+    <p>&copy; SIPCO - Déploiement automatisé sécurisé via Traefik</p>
+  </footer>
+</body>
+</html>
